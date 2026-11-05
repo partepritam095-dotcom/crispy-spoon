@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRITAM AI JARVIS</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#050b18;color:white;
+  font-family:Arial,sans-serif;text-align:center;
+}
+header{padding:25px;color:#00d9ff;font-size:25px;
+font-weight:bold}
+.circle{
+ width:145px;height:145px;border-radius:50%;
+ border:3px solid #00d9ff;margin:35px auto;
+ display:grid;place-items:center;
+ box-shadow:0 0 30px #007bff;
+ font-size:55px;
+}
+#chat{
+ margin:20px auto;padding:12px;width:90%;
+ height:270px;overflow:auto;text-align:left;
+ background:#101d32;border-radius:15px;
+}
+input{
+ width:68%;padding:14px;border-radius:10px;
+ border:0;font-size:16px;
+}
+button{
+ padding:14px;border:0;border-radius:10px;
+ background:#00cfff;color:#00101c;
+ font-weight:bold;margin:5px;
+}
+.msg{padding:10px;margin:8px 0;
+background:#172b47;border-radius:10px}
+</style>
+</head>
+<body>
+<header>⚡ PRITAM AI JARVIS</header>
+<div class="circle">🤖</div>
+<h3>HELLO PRITAM</h3>
+<p>आपका अपना AI Assistant</p>
+
+<div id="chat">
+<div class="msg">JARVIS: नमस्ते! मैं आपकी कैसे मदद करूँ?</div>
+</div>
+
+<input id="question" placeholder="कुछ पूछिए...">
+<button onclick="send()">Send</button>
+<br>
+<button onclick="listen()">🎙️ बोलिए</button>
+
+<script>
+const chat=document.getElementById("chat");
+
+function speak(text){
+ let speech=new SpeechSynthesisUtterance(text);
+ speech.lang="hi-IN";
+ speechSynthesis.speak(speech);
+}
+
+function send(){
+ let input=document.getElementById("question");
+ let q=input.value.trim();
+ if(!q)return;
+
+ chat.innerHTML+=`<div class="msg">आप: ${q.replace(/</g,"&lt;")}</div>`;
+ let answer="नमस्ते! मैं PRITAM AI हूँ। आपका सवाल समझ गया। असली AI जवाब की सुविधा अगले चरण में जोड़ेंगे।";
+
+ chat.innerHTML+=`<div class="msg">JARVIS: ${answer}</div>`;
+ input.value="";
+ chat.scrollTop=chat.scrollHeight;
+ speak(answer);
+}
+
+function listen(){
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SpeechRecognition){
+ alert("इस ब्राउज़र में Voice Recognition उपलब्ध नहीं है।");
+ return;
+ }
+ let recognition=new SpeechRecognition();
+ recognition.lang="hi-IN";
+ recognition.onresult=(e)=>{
+ document.getElementById("question").value=
+ e.results[0][0].transcript;
+ send();
+ };
+ recognition.start();
+}
+</script>
+</body>
+</html>
+
